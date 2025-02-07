@@ -1,0 +1,32 @@
+/* Navbar.css */
+.navbar {
+    background-color: #007bff !important; /* Blue background */
+    width: 100%; /* Full width */
+    padding: 10px 0; /* Add some padding */
+  }
+  
+  .navbar-brand,
+  .nav-link {
+    color: white !important; /* White text for navbar items */
+  }
+  
+  .nav-link:hover {
+    color: #f8f9fa !important; /* Light gray on hover */
+  }
+  
+  .dropdown-toggle {
+    background-color: white !important; /* White background for dropdown */
+    color: #007bff !important; /* Blue text for dropdown */
+  }
+  
+  .dropdown-menu {
+    background-color: #f8f9fa; /* Light gray background for dropdown menu */
+  }
+
+  .blurred {
+    filter: blur(5px);
+  }
+  
+  .no-blur {
+    filter: none !important;
+  }
