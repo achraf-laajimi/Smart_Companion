@@ -55,11 +55,9 @@ body {
   margin-top: 20px;
 }
 
-
-/* App.css */
 .blurred {
-  filter: blur(5px); /* Apply blur to the entire page */
-  pointer-events: none; /* Disable interactions with blurred elements */
+  filter: blur(5px); 
+  pointer-events: none; 
 }
 
 /* Ensure the bubble and its content are not blurred */
@@ -68,3 +66,8 @@ body {
   pointer-events: auto !important; /* Enable interactions with the bubble */
 }
 
+@keyframes pointingAnimation {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-15px); } /* Moves up */
+  100% { transform: translateY(0); } /* Moves back to original position */
+}

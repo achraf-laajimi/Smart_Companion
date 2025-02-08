@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import quizoImage from './quizo.webp'; // Import the image
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesome
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'; // Import the send icon
+import quizoImage from './quizo.webp';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios'; // For making API requests
 
-function BottomSection({ isBlurred, handleBlur }) {
+function BottomSection({ sectionMap, onPointToElement }) {
   const [isMoved, setIsMoved] = useState(false);
   const [clickCount, setClickCount] = useState(0);
   const [cycleComplete, setCycleComplete] = useState(false);
   const [userInput, setUserInput] = useState('');
+  const [chatbotResponse, setChatbotResponse] = useState(''); // Store chatbot's response
 
   const messages = [
     "welcome",
@@ -28,17 +30,39 @@ function BottomSection({ isBlurred, handleBlur }) {
       setIsMoved(false);
       setCycleComplete(true);
     }
-    handleBlur();
   };
 
   const handleInputChange = (event) => {
     setUserInput(event.target.value);
   };
 
-  const handleSendMessage = () => {
-    // Handle sending the message (e.g., send to an API or display it)
-    console.log('Message sent:', userInput);
-    setUserInput(''); // Clear the input after sending
+  const handleSendMessage = async () => {
+    const query = userInput.trim();
+
+    // Send the query to the Flask backend
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/chatbot', // Flask backend endpoint
+        {
+          message: query,
+        }
+      );
+
+      const { response: backendResponse, elementId } = response.data;
+
+      // Update chatbot response
+      setChatbotResponse(backendResponse);
+
+      // Point to the element if elementId is provided
+      if (elementId) {
+        onPointToElement(elementId); // Call the function to point to the element
+      }
+    } catch (error) {
+      console.error('Error calling Flask backend:', error);
+      setChatbotResponse("Sorry, something went wrong. Please try again.");
+    }
+
+    setUserInput('');
   };
 
   const bubbleWidth = clickCount === messages.length - 1 ? 500 : Math.min(400, Math.max(200, messages[clickCount].length * 10));
@@ -70,7 +94,7 @@ function BottomSection({ isBlurred, handleBlur }) {
           <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
             {/* Text */}
             <p className="m-0" style={{ flex: 1, textAlign: 'center' }}>
-              {messages[clickCount]}
+              {chatbotResponse || messages[clickCount]}
             </p>
             {/* Arrow button - only show if not the last message */}
             {clickCount < messages.length - 1 && (

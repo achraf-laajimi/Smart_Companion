@@ -30,3 +30,9 @@
   .no-blur {
     filter: none !important;
   }
+
+/* Navbar.css */
+.active-link {
+  background-color: orange;
+  color: white !important;
+}
